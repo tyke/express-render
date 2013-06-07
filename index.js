@@ -1,0 +1,30 @@
+ var _ = require('underscore')
+
+ var render = function(server) {
+    if(!(this instanceof render)) {
+        return new render(server)
+    }
+
+    server = server || {}
+    if(_.indexOf([typeof server.engine, typeof server.set], 'undefined') > -1) {
+        throw new Error('Render requires first argument to be an instance of express')
+    }
+    this.server = server
+    this.cons = require('consolidate')
+    this.args = {}
+}
+render.prototype.init = function(args) {
+    _.extend(this.args, {
+        render_engine: 'underscore'
+      , template_type: 'html'
+      , views_directory: './'
+    }, args)
+
+    this.server.engine('.'+this.args.template_type, this.cons[this.args.render_engine])
+    this.server.set('view engine', this.args.template_type)
+    this.server.set('views', this.args.views_directory)
+
+    var self = this
+}
+
+module.exports = render
