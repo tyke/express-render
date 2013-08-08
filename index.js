@@ -20,8 +20,8 @@ render.prototype.init = function(args) {
       , views_directory: './'
     }, args)
 
-    if(this.args.template_settings && this.args.render_engine === 'underscore') {
-        _.templateSettings = this.args.template_settings
+    if(this.args.render_filename && this.args.render_variable) {
+        global[this.args.render_filename] = this.args.render_variable
     }
 
     this.server.engine('.'+this.args.template_type, this.cons[this.args.render_engine])

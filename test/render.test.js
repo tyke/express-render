@@ -1,6 +1,7 @@
 var server = require('express')()
   , should = require('should')
   , request = require('request')
+  , _ = require('underscore')
 
 describe('Initialization', function() {
     it('should require server be passed in', function() {
@@ -74,6 +75,29 @@ describe('Render', function() {
         })
         server.get('/', function(request, response) {
             response.render('index.html', {
+                name: 'Tyke'
+            })
+        })
+        var listener = server.listen(9000)
+        request('http://127.0.0.1:9000', function(error, response, body) {
+            listener.close()
+            body.should.equal('Hello, Tyke')
+            done()
+        })
+    })
+    it('should allow to pass in render engine in order to override various settings', function(done) {
+        _.templateSettings = {
+            interpolate : /\{\{-([\s\S]+?)\}\}/g
+          , escape      : /\{\{([^-]|[^-][\s\S]+?)\}\}/g
+          , evaluate    : /\{\[([\s\S]+?)\]\}/g
+        }
+        render.init({
+            views_directory: './views/'
+          , render_filename: '-'
+          , render_variable: _
+        })
+        server.get('/', function(request, response) {
+            response.render('mustache.html', {
                 name: 'Tyke'
             })
         })
