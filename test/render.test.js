@@ -86,15 +86,14 @@ describe('Render', function() {
         })
     })
     it('should allow to pass in render engine in order to override various settings', function(done) {
-        _.templateSettings = {
-            interpolate : /\{\{-([\s\S]+?)\}\}/g
-          , escape      : /\{\{([^-]|[^-][\s\S]+?)\}\}/g
-          , evaluate    : /\{\[([\s\S]+?)\]\}/g
-        }
         render.init({
             views_directory: './views/'
-          , render_filename: '-'
-          , render_variable: _
+          , template_settings: {
+                interpolate : /\{\{-([\s\S]+?)\}\}/g
+              , escape      : /\{\{([^-]|[^-][\s\S]+?)\}\}/g
+              , evaluate    : /\{\[([\s\S]+?)\]\}/g
+            }
+
         })
         server.get('/', function(request, response) {
             response.render('mustache.html', {
