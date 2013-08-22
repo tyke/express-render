@@ -1,6 +1,6 @@
 {
   "name": "express-render",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "dead simple render setup",
   "author": "tyke lewis <tykelewis@gmail.com>",
   "dependencies": {
