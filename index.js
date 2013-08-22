@@ -1,16 +1,19 @@
- var _ = require('underscore')
+var _ = require('underscore')
+   , self = this
 
- var render = function(server) {
+ var render = function(server, options) {
     if(!(this instanceof render)) {
-        return new render(server)
+        return new render(server, options)
     }
 
+    options = options || {}
     server = server || {}
     if(_.indexOf([typeof server.engine, typeof server.set], 'undefined') > -1) {
         throw new Error('Render requires first argument to be an instance of express')
     }
+
     this.server = server
-    this.cons = require('consolidate')
+    this.cons = options.consolidate || require('consolidate')
     this.args = {}
 }
 render.prototype.init = function(args) {
